@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
 const products = require('./routes/products');
+const deliverOrder = require('./routes/deliverOrders');
+const orderDetails = require('./routes/recieveDetails');
 require('dotenv').config()
 const uri = process.env.MONGO_URI
 
@@ -32,6 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/product', products);
+app.use('/order', deliverOrder);
+app.use('/orderdetail', orderDetails);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
