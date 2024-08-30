@@ -7,6 +7,13 @@ const mongoose = require('mongoose');
 const products = require('./routes/products');
 const deliverOrder = require('./routes/deliverOrders');
 const orderDetails = require('./routes/recieveDetails');
+const itemRecieved = require('./routes/itemRecieves');
+const location = require('./routes/locations');
+const qrcode = require('./routes/qrcodes');
+const tagDetail = require('./routes/tagDetails');
+const production = require('./routes/productionOrders');
+const productionDetails = require('./routes/productionOrderDetails');
+const itemIssue = require('./routes/itemIssues');
 require('dotenv').config()
 const uri = process.env.MONGO_URI
 
@@ -36,6 +43,13 @@ app.use('/users', usersRouter);
 app.use('/product', products);
 app.use('/order', deliverOrder);
 app.use('/orderdetail', orderDetails);
+app.use('/recieve', itemRecieved);
+app.use('/location', location);
+app.use('/qrcode', qrcode);
+app.use('/tagDetail', tagDetail);
+app.use('/production', production);
+app.use('/production_details', productionDetails);
+app.use('/issue', itemIssue);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
