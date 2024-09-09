@@ -9,3 +9,5 @@ const tagDetailSchema = new mongoose.Schema({
     work_order_id:{type:String},
     location_id:{type:String},
 })
+
+module.exports = mongoose.model('TagDetail', tagDetailSchema);

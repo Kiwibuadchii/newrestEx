@@ -14,6 +14,17 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+router.post('/upload', async (req, res) => {
+    try {
+        // let data = (await tagDetail.create(req.body))
+        //     await data.save()
+            
+        res.status(200).json(req.body)
+        console.log(req.body,"Body saved");
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 router.get('/', async  (req, res)=> {
     try {

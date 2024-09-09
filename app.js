@@ -14,6 +14,7 @@ const tagDetail = require('./routes/tagDetails');
 const production = require('./routes/productionOrders');
 const productionDetails = require('./routes/productionOrderDetails');
 const itemIssue = require('./routes/itemIssues');
+const upload = require('./routes/uploads');
 require('dotenv').config()
 const uri = process.env.MONGO_URI
 
@@ -50,6 +51,11 @@ app.use('/tagDetail', tagDetail);
 app.use('/production', production);
 app.use('/production_details', productionDetails);
 app.use('/issue', itemIssue);
+app.use('/upload', upload);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve static files from the "uploads" directory
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
