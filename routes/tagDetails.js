@@ -2,30 +2,25 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const tagDetail = require('../models/tagDetail');
+const QRCode = require('qrcode');
+const Product = require('../models/Product');
 
 router.post('/', async (req, res) => {
     try {
         let data = (await tagDetail.create(req.body))
+        let dataProduct = await Product.findOne({product_code:req.body.prod_code})
+        dataProduct.qty_total_length += Number(req.body.qty_per_tag)
+        const url_id = data.id 
+        data.qr_code_img = await QRCode.toDataURL(url_id)
             await data.save()
+            await dataProduct.save()
             
         res.status(200).json(data)
-        console.log(req.body,"Body saved");
+        console.log(dataProduct,"Body saved");
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
-router.post('/upload', async (req, res) => {
-    try {
-        // let data = (await tagDetail.create(req.body))
-        //     await data.save()
-            
-        res.status(200).json(req.body)
-        console.log(req.body,"Body saved");
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
 router.get('/', async  (req, res)=> {
     try {
     
@@ -38,6 +33,16 @@ router.get('/', async  (req, res)=> {
 
     }
 })
+router.get('/generateQR', async (req, res) => {
+    try {
+
+        const data = await Product.findOne({product_code:"P-1"})
+        res.status(200).json(data)
+    } catch (err) {
+      console.error('Error generating QR code:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 
 router.get('/:id', async (req, res) => {
     try {
