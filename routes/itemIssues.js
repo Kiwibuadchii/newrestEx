@@ -2,25 +2,27 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const issue = require('../models/itemIssue');
-
+const tagDetail = require('../models/tagDetail')
+const product = require('../models/Product')
 router.post('/', async (req, res) => {
     try {
         // let order = await deliverOrder.findOne().sort({_id:-1})
         let data = (await issue.create(req.body))
-        // if(order?.work_order_id != null){
-        //     let textSplit = order.work_order_id.split("-")
-        //     let newCode = `W-${Number(textSplit[1])+1}`
-        //     data.work_order_id = newCode
-        //     await data.save()
+        const dataTag = await tagDetail.findById(data.tag_id)
+        const dataProduct = await product.findOne({product_code:dataTag.prod_code})
+        if(dataTag.qty_per_tag > data.iss_qty){
             
-        // }
-        // else{
-        //     let newCode = `W-1`
-        //     data.work_order_id = newCode
+            dataTag.qty_per_tag -= Number(data.iss_qty)
+            dataProduct.qty_total_length -= Number(data.iss_qty)
+            dataTag.save() 
+            dataProduct.save()
             await data.save()
-            
-        // }
-
+        }
+        else{
+            res.send('Product not enough')
+        }
+        
+        
         res.status(200).json(data)
         console.log(req.body,"Body saved");
     } catch (error) {
