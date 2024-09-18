@@ -14,12 +14,14 @@ router.post('/', async (req, res) => {
             let newCode = `S-${Number(textSplit[1])+1}`
             data.issue_order_id = newCode
             await data.save()
+            res.status(200).json(data)
             
         }
         else{
             let newCode = `S-1`
             data.issue_order_id = newCode
             await data.save()
+            res.status(200).json(data)
             
         }
 
