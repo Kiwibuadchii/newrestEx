@@ -7,9 +7,9 @@ const Product = require('../models/Product');
 
 router.post('/', async (req, res) => {
     try {
-        let data = (await tagDetail.create(req.body))
         let dataProduct = await Product.findOne({product_code:req.body.prod_code})
         dataProduct.qty_total_length += Number(req.body.qty_per_tag)
+        let data = (await tagDetail.create(req.body))
         const url_id = data.id 
         data.qr_code_img = await QRCode.toDataURL(url_id)
             await data.save()

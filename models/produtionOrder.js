@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 
 const productionSchema = new mongoose.Schema({
-    prod_code:{type:String},
-    prod_daate:{type:Date}
+    user_id:{type:String},
+    iss_expected_date:{type:Date},
+    issue_order_id:{type:String},
 })
 
 module.exports = mongoose.model('Production', productionSchema);
