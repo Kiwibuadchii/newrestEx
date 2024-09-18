@@ -15,6 +15,7 @@ const production = require('./routes/productionOrders');
 const productionDetails = require('./routes/productionOrderDetails');
 const itemIssue = require('./routes/itemIssues');
 const uploadImage = require('./routes/uploads')
+const cors = require('cors');
 
 require('dotenv').config()
 const uri = process.env.MONGO_URI
@@ -73,5 +74,10 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+const corsOptions = {
+  origin: 'https://newrestex-production.up.railway.app',
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 module.exports = app;
