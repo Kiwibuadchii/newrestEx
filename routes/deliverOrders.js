@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     try {
         let order = await deliverOrder.findOne().sort({_id:-1})
         let data = (await deliverOrder.create(req.body))
-        if(order?.work_order_id != null){
+        if(order?.work_order_id == null){
             let textSplit = order.work_order_id.split("-")
             let newCode = `W-${Number(textSplit[1])+1}`
             data.work_order_id = newCode
