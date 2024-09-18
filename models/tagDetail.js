@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const tagDetailSchema = new mongoose.Schema({
     prod_code:{type:String},
-    qr_code_id:{type:String},
     qr_code_img:{type:String},
     qty_per_tag:{type:Number},
     work_order_id:{type:String},
