@@ -7,6 +7,8 @@ const tagDetailSchema = new mongoose.Schema({
     qty_per_tag:{type:Number},
     work_order_id:{type:String},
     location_id:{type:String},
+    re_order_id:{type:String},
+    iss_order_id:{type:String},
 })
 
 module.exports = mongoose.model('TagDetail', tagDetailSchema);
