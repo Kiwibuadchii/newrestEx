@@ -76,7 +76,9 @@ app.use(function(err, req, res, next) {
 });
 const corsOptions = {
   origin: 'http://localhost:4200',
-  credentials: true,
+  allowedHeaders: "Content-Type",
+  optionsSuccessStatus: 200,
+  // credentials: true,
   methods: "GET, POST, PUT, DELETE",
 };
 app.use(cors(corsOptions));
