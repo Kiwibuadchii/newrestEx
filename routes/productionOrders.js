@@ -5,11 +5,24 @@ const production = require('../models/produtionOrder');
 
 router.post('/', async (req, res) => {
     try {
+        let alldata = await production.find({})
+        let order = await production.findOne().sort({_id:-1})
         let data = (await production.create(req.body))
+
+        if(alldata.length != 0){
+            let textSplit = order.issue_order_id.split("-")
+            let newCode = `S-${Number(textSplit[1])+1}`
+            data.issue_order_id = newCode
             await data.save()
             
-        res.status(200).json(data)
-        console.log(req.body,"Body saved");
+        }
+        else{
+            let newCode = `S-1`
+            data.issue_order_id = newCode
+            await data.save()
+            
+        }
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
