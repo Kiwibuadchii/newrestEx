@@ -77,6 +77,7 @@ app.use(function(err, req, res, next) {
 const corsOptions = {
   origin: 'https://newrestex-production.up.railway.app',
   credentials: true,
+  methods: "GET, POST, PUT, DELETE",
 };
 app.use(cors(corsOptions));
 
