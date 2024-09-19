@@ -30,10 +30,23 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+// const corsOptions = {
+//   origin: 'http://localhost:4200',  // อนุญาตให้เข้าถึงจาก localhost:4200
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// };
+const allowedOrigins = ['https://new-template-mit-sa.vercel.app', 'http://localhost:4200'];
+
 const corsOptions = {
-  origin: 'http://localhost:4200',  // อนุญาตให้เข้าถึงจาก localhost:4200
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
