@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const itemRecieve = require('../models/itemRecieve');
-
+const deliverOrder = require('../models/deliverOrder');
 
 router.post('/', async (req, res) => {
     try {
@@ -32,8 +32,21 @@ router.post('/', async (req, res) => {
 router.get('/', async  (req, res)=> {
     try {
     
-            const data = await itemRecieve.find({}) 
-            res.status(200).json(data)
+            // const data = await itemRecieve.find({}) 
+            const details = await itemRecieve.find();
+
+        // วนลูปและดึงข้อมูลจาก ProductionOrder โดยใช้ production_order_id จากแต่ละ detail
+        const detailedResults = await Promise.all(details.map(async detail => {
+            // ตรวจสอบว่า detail มี production_order_id ที่มีค่าหรือไม่
+            if (detail.re_order_id) {
+                const order = await deliverOrder.findById(detail.re_order_id);
+                // เพิ่มข้อมูล order ใน object detail ที่มีอยู่
+                return {...detail.toObject(), order: order ? order.toObject() : null};
+            } else {
+                return {...detail.toObject(), order: null};
+              }
+          }));
+            res.status(200).json(detailedResults)
         
         
     } catch (error) {
