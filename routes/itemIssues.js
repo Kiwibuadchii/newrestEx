@@ -7,23 +7,28 @@ const product = require('../models/Product')
 router.post('/', async (req, res) => {
     try {
         // let order = await deliverOrder.findOne().sort({_id:-1})
-        let data = (await issue.create(req.body))
-        const dataTag = await tagDetail.findById(data.tag_id)
+        const dataTag = await tagDetail.findById(req.body.tag_id)
         const dataProduct = await product.findOne({product_code:dataTag.prod_code})
         if(dataTag.qty_per_tag > data.iss_qty){
             
             dataTag.qty_per_tag -= Number(data.iss_qty)
+            if(dataTag.qty_per_tag <=0 ){
+                dataTag.findByIdAndDelete({_id:req.body.tag_id})
+            }
+            const data = (await issue.create(req.body))
             dataProduct.qty_total_length -= Number(data.iss_qty)
             dataTag.save() 
             dataProduct.save()
             await data.save()
+            res.status(200).json(data)
         }
         else{
+            res.status(500).json("product Product not enough")
             res.send('Product not enough')
         }
         
         
-        res.status(200).json(data)
+        
         console.log(req.body,"Body saved");
     } catch (error) {
         res.status(500).json({ message: error.message });

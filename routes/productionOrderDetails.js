@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const mongoose = require('mongoose');
 const productionDetail = require('../models/productionOrderDetail');
+const productionOrder = require('../models/produtionOrder')
 
 router.post('/', async (req, res) => {
     try {
@@ -17,9 +18,21 @@ router.post('/', async (req, res) => {
 router.get('/', async  (req, res)=> {
     try {
     
-            const data = await productionDetail.find({}) 
-            res.status(200).json(data)
-        
+      // ค้นหาข้อมูลทั้งหมดจาก ProductionDetail
+      const details = await productionDetail.find();
+
+      // วนลูปและดึงข้อมูลจาก ProductionOrder โดยใช้ production_order_id จากแต่ละ detail
+      const detailedResults = await Promise.all(details.map(async detail => {
+          // ตรวจสอบว่า detail มี production_order_id ที่มีค่าหรือไม่
+          if (detail.production_order_id) {
+              const order = await productionOrder.findById(detail.production_order_id);
+              // เพิ่มข้อมูล order ใน object detail ที่มีอยู่
+              return {...detail.toObject(), order: order ? order.toObject() : null};
+          } else {
+              return {...detail.toObject(), order: null};
+            }
+        }));
+        res.status(200).json(detailedResults)
         
     } catch (error) {
         res.status(500).json({ message: error.message });
