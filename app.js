@@ -15,6 +15,8 @@ const production = require('./routes/productionOrders');
 const productionDetails = require('./routes/productionOrderDetails');
 const itemIssue = require('./routes/itemIssues');
 const uploadImage = require('./routes/uploads')
+const User = require('./routes/users');
+
 const cors = require('cors');
 
 require('dotenv').config()
@@ -74,6 +76,7 @@ app.use('/production', production);
 app.use('/production_details', productionDetails);
 app.use('/issue', itemIssue);
 app.use('/upload', uploadImage);
+app.use('/user', User);
 
 app.use('/files',express.static(path.join(__dirname, 'uploads')));
 
