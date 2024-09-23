@@ -9,15 +9,16 @@ router.post('/', async (req, res) => {
         let alldata = await deliverOrder.find({})
         let order = await deliverOrder.findOne().sort({_id:-1})
         let data = (await deliverOrder.create(req.body))
-        if(alldata.length != 0){
-            let textSplit = order.work_order_id.split("-")
-            let newCode = `W-${Number(textSplit[1])+1}`
-            data.work_order_id = newCode
-            await data.save()
-            
+        if (alldata.length != 0) {
+            let textSplit = order.work_order_id.split("R");
+            let currentNumber = Number(textSplit[1]); // แปลงเป็นตัวเลข
+            let newNumber = (currentNumber + 1).toString().padStart(6, '0'); // บวก 1 และเติม 0 ข้างหน้าให้ครบ 6 หลัก
+            let newCode = `R${newNumber}`; // สร้าง work_order_id ใหม่ในรูปแบบ R000001
+            data.work_order_id = newCode;
+            await data.save();
         }
         else{
-            let newCode = `W-1`
+            let newCode = `R000001`
             data.work_order_id = newCode
             await data.save()
             
