@@ -37,7 +37,7 @@ var app = express();
 //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 //   allowedHeaders: ['Content-Type', 'Authorization']
 // };
-const allowedOrigins = ['https://new-template-mit-sa.vercel.app', 'http://localhost:4200'];
+const allowedOrigins = ['https://new-template-mit-sa.vercel.app', 'http://localhost:4200','http://localhost:5173'];
 
 const corsOptions = {
   origin: function (origin, callback) {
