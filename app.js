@@ -15,6 +15,13 @@ const production = require('./routes/productionOrders');
 const productionDetails = require('./routes/productionOrderDetails');
 const itemIssue = require('./routes/itemIssues');
 const uploadImage = require('./routes/uploads')
+
+const book = require('./routes/Bookstore/Book')
+const customer = require('./routes/Bookstore/Customer')
+const author = require('./routes/Bookstore/Author')
+const promotion = require('./routes/Bookstore/Promo')
+const bookView = require('./routes/Bookstore/bookView')
+const invoice = require('./routes/Bookstore/Invoice')
 const User = require('./routes/users');
 
 const cors = require('cors');
@@ -76,6 +83,16 @@ app.use('/production', production);
 app.use('/production_details', productionDetails);
 app.use('/issue', itemIssue);
 app.use('/upload', uploadImage);
+app.use('/user', User);
+
+app.use('/book',book)
+app.use('/customer',customer)
+app.use('/author',author)
+app.use('/promotion',promotion)
+app.use('/bookView',bookView)
+app.use('/invoice',invoice)
+
+
 app.use('/user', User);
 
 app.use('/files',express.static(path.join(__dirname, 'uploads')));
